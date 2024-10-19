@@ -17,6 +17,7 @@ import {
   import { GetAllPokemonService } from 'src/pokemon/application/use-cases/get-all-pokemon/get-all-pokemon.service';
   import { GetPokemonByIdService } from 'src/pokemon/application/use-cases/get-pokemon-by-id/get-pokemon-by-id.service';
   import { UpdatePokemonService } from 'src/pokemon/application/use-cases/update-pokemon/update-pokemon.service';
+  import { FetchAndCreatePokemonService } from 'src/pokemon/application/use-cases/fetch-and-create-pokemon/fetch-and-create-pokemon.service';
 
   @Controller('pokemon')
   @ApiTags('Pokemon')
@@ -28,6 +29,7 @@ import {
       private readonly getAllPokemonService: GetAllPokemonService,
       private readonly getPokemonByIdService: GetPokemonByIdService,
       private readonly updatePokemonService: UpdatePokemonService,
+      private readonly fetchAndCreatePokemonService: FetchAndCreatePokemonService,
     ) {}
   
     /**
@@ -98,6 +100,21 @@ import {
         return request.status(HttpStatus.OK).json(pokemon);
       } catch (error) {
         throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      }
+    }
+
+    /**
+     * Endpoint para eliminar un Pokémon por su ID.
+     * @param id - El ID del Pokémon a eliminar.
+     * @returns `true` si fue eliminado correctamente.
+     */
+    @Post(':name')
+    async fetchAndCreate(@Res() request, @Param('name') name: string) {
+      try {
+        const pokemon = await this.fetchAndCreatePokemonService.handler(name);
+        return request.status(HttpStatus.OK).json(pokemon);
+      } catch (error) {
+        throw new HttpException('Error creating Pokémon', HttpStatus.BAD_REQUEST);
       }
     }
   }

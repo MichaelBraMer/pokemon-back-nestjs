@@ -19,4 +19,6 @@ export interface PokemonRepository {
     pokemonId: number,
     pokemon: UpdatePokemonDTO,
   ): Promise<Pokemon>;
+
+  fetchAndCreate(name: string): Promise<Pokemon>;
 }

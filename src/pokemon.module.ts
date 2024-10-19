@@ -8,10 +8,14 @@ import { DeletePokemonService } from './pokemon/application/use-cases/delete-pok
 import { GetAllPokemonService } from './pokemon/application/use-cases/get-all-pokemon/get-all-pokemon.service';
 import { GetPokemonByIdService } from './pokemon/application/use-cases/get-pokemon-by-id/get-pokemon-by-id.service';
 import { UpdatePokemonService } from './pokemon/application/use-cases/update-pokemon/update-pokemon.service';
+import { FetchAndCreatePokemonService } from './pokemon/application/use-cases/fetch-and-create-pokemon/fetch-and-create-pokemon.service';
+import { HttpModule } from '@nestjs/axios'; // Registrar el esquema de Pokémon
+import { PokeApiMapper } from './pokemon/infrastructure/mappers/poke-api.mapper';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Pokemon.name, schema: PokemonSchema }]), // Registrar el esquema de Pokémon
+    MongooseModule.forFeature([{ name: Pokemon.name, schema: PokemonSchema }]),
+    HttpModule,
   ],
   controllers: [PokemonController], // Aquí registras el controlador
   providers: [
@@ -20,6 +24,8 @@ import { UpdatePokemonService } from './pokemon/application/use-cases/update-pok
     GetAllPokemonService,
     GetPokemonByIdService,
     UpdatePokemonService,
+    FetchAndCreatePokemonService,
+    PokeApiMapper,
     {
       provide: 'PokemonRepository',
       useClass: PokemonRepositoryMongo,
@@ -31,6 +37,7 @@ import { UpdatePokemonService } from './pokemon/application/use-cases/update-pok
     GetAllPokemonService,
     GetPokemonByIdService,
     UpdatePokemonService,
+    FetchAndCreatePokemonService,
   ]
 })
 export class PokemonModule {}
